@@ -1,0 +1,70 @@
+{
+    "version": "1.0.0-dev",
+    "description": "一键复制上一条命令到剪贴板 | Message Dump - A CLI tool to dump the last command output to the clipboard.",
+    "homepage": "https://github.com/Cishoon/md",
+    "license": {
+        "identifier": "MIT"
+    },
+    "notes": [
+        "This tool requires PowerShell 7+.",
+        "Add the following line to your $PROFILE to enable it:",
+        ". \"$(scoop prefix Cishoon.md)\\md.ps1\"",
+        "",
+        "If you want to use 'mdd' instead of 'md' (to avoid conflict with mkdir):",
+        "$env:MD_CMD_NAME = 'mdd'; . \"$(scoop prefix Cishoon.md)\\md.ps1\""
+    ],
+    "notes_cn": [
+        "此工具需要 PowerShell 7+。",
+        "请将以下内容添加到您的 $PROFILE 中以启用它：",
+        ". \"$(scoop prefix Cishoon.md)\\md.ps1\"",
+        "",
+        "如果您想使用 'mdd' 命令代替 'md' (避免与 mkdir 冲突)：",
+        "$env:MD_CMD_NAME = 'mdd'; . \"$(scoop prefix Cishoon.md)\\md.ps1\""
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Cishoon/md/archive/c92611caa13813505cd4f6a3827f41383d4fe345.zip",
+            "extract_dir": "md-c92611caa13813505cd4f6a3827f41383d4fe345",
+            "hash": "2121898b902c96601388015c00c634e8e4bb2a7843768279c11b72740b4d12c2"
+        }
+    },
+    "commands": [
+        "md"
+    ],
+    "pre_install": [
+        "$bucket = if ($bucket) { $bucket } else { (scoop config).'abgox-abyss-bucket-name' }",
+        ". $bucketsdir\\$bucket\\script\\utils.ps1",
+        "A-Start-Install",
+        "A-Ensure-Directory \"$persist_dir\\.md\"",
+        "A-New-File \"$persist_dir\\.md\\exclude\""
+    ],
+    "post_install": [
+        "$bucket = if ($bucket) { $bucket } else { (scoop config).'abgox-abyss-bucket-name' }",
+        ". $bucketsdir\\$bucket\\script\\utils.ps1",
+        "A-New-LinkDirectory \"$home\\.md\"",
+        "A-Complete-Install"
+    ],
+    "pre_uninstall": [
+        "$bucket = if ($bucket) { $bucket } else { (scoop config).'abgox-abyss-bucket-name' }",
+        ". $bucketsdir\\$bucket\\script\\utils.ps1",
+        "A-Start-Uninstall",
+        "A-Remove-Link"
+    ],
+    "post_uninstall": [
+        "$bucket = if ($bucket) { $bucket } else { (scoop config).'abgox-abyss-bucket-name' }",
+        ". $bucketsdir\\$bucket\\script\\utils.ps1",
+        "A-Complete-Uninstall"
+    ],
+    "checkver": {
+        "url": "https://github.com/Cishoon/md/commits/main",
+        "regex": "(?s)<a href=\"/Cishoon/md/commit/([a-f0-9]{40})\""
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Cishoon/md/archive/$match1.zip",
+                "extract_dir": "md-$match1"
+            }
+        }
+    }
+}
